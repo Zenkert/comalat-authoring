@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.sakaiproject.authoring.model.ComalatFeedback" table="comalat_feedback">
+        <!-- create the primary key id -->
+        <!-- create the primary key id, using native is typically the best way
+            to do this -->
+        <id name="comalatFeedbackId" type="long" column="FEEDBACK_ID">
+            <generator class="native">
+                <param name="sequence">FEEDBACK_ID_SEQ</param>
+            </generator>
+        </id>
+
+        <property name="lowerPercent" type="int">
+            <column name="LOWER_PERCENT"/>
+        </property>
+
+        <property name="upperPercent" type="int">
+            <column name="UPPER_PERCENT"/>
+        </property>
+
+        <property name="decisionPoint" type="boolean">
+            <column name="DECISION_POINT"/>
+        </property>
+
+        <property name="feedbackDE" type="string">
+            <column name="FEEDBACK_DE" length="1000"/>
+        </property>
+
+        <property name="feedbackEN" type="string">
+            <column name="FEEDBACK_EN" length="1000"/>
+        </property>
+
+        <property name="feedbackES" type="string">
+            <column name="FEEDBACK_ES" length="1000"/>
+        </property>
+
+        <property name="feedbackAR" type="string">
+            <column name="FEEDBACK_AR" length="1000"/>
+        </property>
+
+        <property name="feedbackKU" type="string">
+            <column name="FEEDBACK_KU" length="1000"/>
+        </property>
+    </class>
+</hibernate-mapping>

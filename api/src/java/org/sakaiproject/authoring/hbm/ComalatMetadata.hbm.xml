@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.sakaiproject.authoring.model.ComalatMetadata" table="comalat_metadata">
+        <!-- create the primary key id -->
+        <!-- create the primary key id, using native is typically the best way
+            to do this -->
+        <id name="comalatMetadataId" type="long" column="METADATA_ID">
+            <generator class="native">
+                <param name="sequence">METADATA_ID_SEQ</param>
+            </generator>
+        </id>
+
+        <property name="metadataTag" type="string">
+            <column name="METADATA_TAG" length="255"/>
+        </property>
+
+        <property name="metadataName" type="string">
+            <column name="METADATA_NAME" length="255"/>
+        </property>
+
+        <property name="language" type="string">
+            <column name="LANGUAGE" length="255"/>
+        </property>
+
+
+        <!--set name="comalatActivities" table="comalat_activity" inverse="true" lazy="true" fetch="select">
+            <key column="METADATA_ID" />
+            <one-to-many class="org.sakaiproject.authoring.model.ComalatActivity" />
+        </set-->
+    </class>
+</hibernate-mapping>

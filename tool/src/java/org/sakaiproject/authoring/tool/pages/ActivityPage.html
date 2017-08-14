@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Activity Page</title>
+</head>
+
+<body>
+<wicket:extend>
+
+    <h2>Administration - Activities</h2>
+    <br/>
+    <form wicket:id="form">
+
+        <h3>Adjust Filter</h3>
+
+        <table style="width:80%">
+            <tr>
+                <td><b>Lesson</b></td>
+                <td><b>Path</b></td>
+                <td><b>Competence</b></td>
+                <td><b>Type</b></td>
+                <td><b>Weighting</b></td>
+                <td><b>Metadata</b></td>
+
+            </tr>
+            <tr>
+                <td><select wicket:id="listLessons"></select></td>
+                <td><select wicket:id="listPaths"></select></td>
+                <td><select wicket:id="listCompetences"></select></td>
+                <td><select wicket:id="listTypes"></select></td>
+                <td><select wicket:id="listWeightings"></select></td>
+                <td><select wicket:id="listMetadata"></select></td>
+                <td><input type="submit" wicket:message="value:filter.button"/></td>
+                <td><input type="submit" wicket:id="resetButton" wicket:message="value:reset.button"/></td>
+            </tr>
+        </table>
+    </form>
+
+    <br/>
+
+    <h3>Activity Table</h3>
+    <br/>
+    <div wicket:id="grid" class="activityTable"></div>
+
+    <!--div wicket:id="navigator"></div-->
+
+
+    <br/>
+    <style type="text/css">
+        .activityTable .table{
+            table-layout: fixed;
+            width: 100%;
+            font-size: 12px;
+        }
+    </style>
+</wicket:extend>
+</body>
+</html>

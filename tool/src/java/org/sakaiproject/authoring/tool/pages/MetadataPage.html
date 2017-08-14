@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Metadata Page</title>
+</head>
+
+<body>
+<wicket:extend>
+
+    <h2>Administration - Metadata</h2>
+    <br/>
+    <h3>Metadata Table</h3>
+    <br/>
+    <div wicket:id="grid"></div>
+    <br/>
+    <style type="text/css">
+        /* style the Wicket FeedbackPanel to remove the list */
+        .alertMessage ul, .success ul {
+            list-style-type: none !important;
+            margin-left: 0px;
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+    </style>
+
+</wicket:extend>
+</body>
+</html>

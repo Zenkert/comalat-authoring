@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!--  SakaiProxy -->
+ 	<bean id="org.sakaiproject.authoring.logic.SakaiProxy"
+    	class="org.sakaiproject.authoring.logic.SakaiProxyImpl"
+        init-method="init">
+        
+        <!-- API injection -->
+        <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+		<property name="eventTrackingService" ref="org.sakaiproject.event.api.EventTrackingService" />
+		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+		<property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+		
+	</bean>
+	
+	<!-- Add our HBM files to the Sakai global session factory -->
+	<bean id="org.sakaiproject.authoring.hibernate.AdditionalHibernateMappings"
+		class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
+		<property name="mappingResources">
+			<list>
+				<value>org/sakaiproject/authoring/hbm/ComalatAssessment.hbm.xml</value>
+				<value>org/sakaiproject/authoring/hbm/ComalatActivity.hbm.xml</value>
+				<value>org/sakaiproject/authoring/hbm/ComalatMetadata.hbm.xml</value>
+				<value>org/sakaiproject/authoring/hbm/ComalatGradeThreshold.hbm.xml</value>
+				<value>org/sakaiproject/authoring/hbm/ComalatFeedback.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- create a DAO bean, use the hibernate implementation -->
+	<bean id="org.sakaiproject.authoring.dao.impl.ProjectDaoTarget"
+		  class="org.sakaiproject.authoring.dao.impl.ProjectDaoImpl" init-method="init">
+		<property name="sessionFactory">
+			<ref
+				bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
+		</property>
+		<property name="persistentClasses">
+			<list>
+				<value>org.sakaiproject.authoring.model.ComalatAssessment</value>
+				<value>org.sakaiproject.authoring.model.ComalatActivity</value>
+				<value>org.sakaiproject.authoring.model.ComalatMetadata</value>
+				<value>org.sakaiproject.authoring.model.ComalatGradeThreshold</value>
+				<value>org.sakaiproject.authoring.model.ComalatFeedback</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- This wraps our DAO so that the transactions are managed -->
+	<bean id="org.sakaiproject.authoring.dao.ProjectDao"
+		class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">
+		<property name="transactionManager"
+			ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
+		<property name="target"
+			ref="org.sakaiproject.authoring.dao.impl.ProjectDaoTarget" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="count*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- ProjectLogic -->
+	<bean id="org.sakaiproject.authoring.logic.ProjectLogic" class="org.sakaiproject.authoring.logic.ProjectLogicImpl">
+		<property name="dao" ref="org.sakaiproject.authoring.dao.ProjectDao" />
+	</bean>
+	
+	<!-- Cache: ttl=1 hour -->
+    <bean id="org.sakaiproject.authoring.cache"
+        class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        <property name="cacheManager">
+            <ref bean="org.sakaiproject.memory.api.MemoryService.cacheManager"/>
+        </property>
+        <property name="cacheName">
+            <value>org.sakaiproject.authoring.cache</value>
+        </property>
+        <property name="maxElementsInMemory" value="1000" />
+        <property name="diskPersistent" value="false" />
+        <property name="eternal" value="false" />
+        <property name="timeToLive" value="3600" />
+        <property name="timeToIdle" value="3600" />
+    </bean>
+
+	<bean id="org.sakaiproject.authoring.logic.LessonBuilderProxy"
+		  class="org.sakaiproject.authoring.logic.LessonBuilderProxyImpl">
+		<property name="lessonBuilder" ref="org.sakaiproject.lessonbuildertool.LessonBuilderAccessAPI"></property>
+		<property name="dao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao"></property>
+	</bean>
+	<bean id="org.sakaiproject.authoring.logic.SamigoProxy"
+		  class="org.sakaiproject.authoring.logic.SamigoProxyImpl">
+		<property name="publishedAssessmentFacadeQueries"><ref bean="PublishedAssessmentFacadeQueries" /></property>
+		<property name="memService"><ref bean="org.sakaiproject.memory.api.MemoryService"/></property>
+		<property name="sakai"><ref bean="org.sakaiproject.authoring.logic.SakaiProxy"/></property>
+	</bean>
+
+</beans>
