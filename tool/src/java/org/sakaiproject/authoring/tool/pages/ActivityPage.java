@@ -140,7 +140,7 @@ public class ActivityPage extends BasePage {
         List<ComalatActivity> activities = filtered ? filteredActivities : retrieveActivities();
 
         editableGrid = new EditableGrid<ComalatActivity, String>("grid", getColumns(),
-                new EditableListDataProvider<>(activities), 100, ComalatActivity.class) {
+                new EditableListDataProvider<>(activities), 500, ComalatActivity.class) {
             private static final long serialVersionUID = 1L;
 
             @Override

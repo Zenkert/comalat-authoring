@@ -31,7 +31,7 @@ public class MetadataPage extends BasePage {
         feedbackPanel.setOutputMarkupPlaceholderTag(true);
 
         EditableGrid<ComalatMetadata, String> editableGrid = new EditableGrid<ComalatMetadata, String>("grid", getColumns(),
-                new EditableListDataProvider<>(retrieveMetadata()), 100, ComalatMetadata.class) {
+                new EditableListDataProvider<>(retrieveMetadata()), 500, ComalatMetadata.class) {
             private static final long serialVersionUID = 1L;
 
             @Override
